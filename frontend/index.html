@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <meta name="viewport" content="width=device-width">
+    <link rel='stylesheet' href='index.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://entropygames.io/entropy-script/dist"></script>
+    <script>
+        window.onESLoad = (es) => {
+			es.parseConfig({
+                permissions: {
+					accessDOM: true
+                }
+            });
+        }
+    </script>
+    <script src="index.es" type="es"></script>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+</html>
