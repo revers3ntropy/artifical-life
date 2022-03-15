@@ -18,14 +18,15 @@ var world = {};
 let host = window.location.protocol + '//' + window.location.hostname;
 
 let fetch_data = func () {
-    print('fetching data');
 	window.fetch(host + ':8090/get', {
-	    method: 'POST',
-	    body: "{}"
+	    method: 'POST'
 	})
         .then(func (data) {
-            print(data);
-        });
+        	data.json();
+        })
+        .then(func (data) {
+        	print(data);
+        })
 };
 
 let render = func () {

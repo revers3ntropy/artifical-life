@@ -8,14 +8,14 @@ import (
 )
 
 type World struct {
-	agents []Agent
-	lastID int
+	Agents []Agent
+	LastID int
 }
 
 func New() *World {
 	world := &World{
-		lastID: 0,
-		agents: []Agent{},
+		LastID: 0,
+		Agents: []Agent{},
 	}
 	world.InitialiseAgents()
 	return world
@@ -32,25 +32,25 @@ func (w *World) InitialiseAgents() {
 }
 
 func (w *World) Update() {
-	for _, a := range w.agents {
+	for _, a := range w.Agents {
 		a.Update()
 	}
 }
 
 func (w *World) NewAgent(x float64, y float64, rot float64) *Agent {
 	agent := Agent{
-		id: w.lastID,
+		Id: w.LastID,
 	}
 	agent.Initialise(x, y, rot)
-	w.agents = append(w.agents, agent)
-	w.lastID++
+	w.Agents = append(w.Agents, agent)
+	w.LastID++
 	return &agent
 }
 
 func (w *World) SerializeWorldData() string {
-	res, err := json.Marshal(w)
+	res, err := json.Marshal(*w)
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println(err)
 	}
 	return string(res)
 }
