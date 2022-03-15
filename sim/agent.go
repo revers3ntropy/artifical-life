@@ -1,6 +1,7 @@
 package Sim
 
 import (
+	"epq/util"
 	"github.com/deeean/go-vector/vector2"
 	"math"
 )
@@ -18,8 +19,9 @@ func (a *Agent) Initialise(x float64, y float64, rot float64) {
 
 }
 
-func (a *Agent) Update() {
-
+func (a *Agent) Update(deltaT float64) {
+	a.Turn(util.RandF64(-0.5, 0.5) * deltaT)
+	a.Move(util.RandF64(0.5, 1) * deltaT)
 }
 
 func (a *Agent) Move(amount float64) {
@@ -29,10 +31,10 @@ func (a *Agent) Move(amount float64) {
 	)
 
 	// limit magnitude
-	by.Normalize()
-	by.MulScalar(math.Min(amount, 1))
+	by = by.Normalize()
+	by = by.MulScalar(amount)
 
-	a.Pos.Add(by)
+	a.Pos = a.Pos.Add(by)
 }
 
 func (a *Agent) NormaliseDirection() {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"epq/server"
 	"epq/sim"
 	"epq/util"
@@ -8,26 +9,36 @@ import (
 	"os"
 )
 
-func loadConfigFromFile() {
+func loadConfigFromFile() *Sim.Config {
 	if len(os.Args) <= 1 {
-		return
+		return &Sim.Config{}
 	}
 
+	// read file
 	path := os.Args[1]
 	file, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Print("Cannot parse config file\n")
-		fmt.Print(err)
-		fmt.Print("\n")
-		return
+		fmt.Println("Cannot read config file")
+		fmt.Println(err)
+		return &Sim.Config{}
 	}
-	util.LoadConfig(file)
+
+	// parse JSON
+	var configJSON Sim.Config
+	err = json.Unmarshal(file, &configJSON)
+	if err != nil {
+		fmt.Println("Cannot parse config file")
+		fmt.Println(err)
+		return &Sim.Config{}
+	}
+
 	fmt.Println("Loaded config from '" + path + "'")
+	return &configJSON
 }
 
 func main() {
 	util.SeedRand()
-	loadConfigFromFile()
-	world := Sim.New()
+	world := Sim.New(loadConfigFromFile())
+	Sim.StartGameLoop(world)
 	Server.StartServer(world)
 }

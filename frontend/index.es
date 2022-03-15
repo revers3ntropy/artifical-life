@@ -1,6 +1,10 @@
 using(import('dom'));
+let m = import('math');
+let json = import('json');
 
-let canvas = $("#canvas")[0];
+let api_port = 8090;
+
+let canvas = $('#canvas')[0];
 let ctx = canvas.getContext('2d');
 
 var width;
@@ -13,29 +17,44 @@ let set_canvas_size = func () {
     let canvasH = canvas.height;
 };
 
-var world = {};
+global var world = {
+	Agents: []
+};
 
-let host = window.location.protocol + '//' + window.location.hostname;
+let start_server_connection = func () {
+	// Create WebSocket connection.
+	let socket = window.WebSocket('ws://' + window.location.hostname + ':' + api_port.str() + '/start-connection');
 
-let fetch_data = func () {
-	window.fetch(host + ':8090/get', {
-	    method: 'POST'
-	})
-        .then(func (data) {
-        	data.json();
-        })
-        .then(func (data) {
-        	print(data);
-        })
+	// Connection opened
+	socket.addEventListener('open', func (event) {
+		print('Connected to server');
+	});
+
+	// Listen for messages
+	socket.addEventListener('message', func (event) {
+		world = json.parse(event.data);
+		print(world.Agents[0].Pos.X);
+		render();
+	});
 };
 
 let render = func () {
+	ctx.clearRect(0, 0, width, height);
+	for agent in world.Agents {
+		ctx.beginPath();
 
+		ctx.arc(agent.Pos.X, agent.Pos.Y, 10, 0, m.PI * 2);
+
+		ctx.fillStyle = 'red';
+
+		ctx.fill();
+		ctx.closePath();
+	}
 };
 
 let main = func () {
 	set_canvas_size();
-    fetch_data();
+    start_server_connection();
 };
 
 main();
