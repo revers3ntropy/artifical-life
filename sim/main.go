@@ -1,5 +1,0 @@
-package Sim
-
-func InitialiseSim() {
-
-}
