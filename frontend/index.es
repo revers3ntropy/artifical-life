@@ -10,11 +10,17 @@ let ctx = canvas.getContext('2d');
 var width;
 var height;
 
+let camera = {
+    zoom: 1,
+    x: 0,
+    y: 0
+};
+
 let set_canvas_size = func () {
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
-    let canvasW = canvas.width;
-    let canvasH = canvas.height;
+    width = canvas.width;
+    height = canvas.height;
 };
 
 global var world = {
@@ -33,7 +39,6 @@ let start_server_connection = func () {
 	// Listen for messages
 	socket.addEventListener('message', func (event) {
 		world = json.parse(event.data);
-		print(world.Agents[0].Pos.X);
 		render();
 	});
 };

@@ -20,8 +20,8 @@ func (a *Agent) Initialise(x float64, y float64, rot float64) {
 }
 
 func (a *Agent) Update(deltaT float64) {
-	a.Turn(util.RandF64(-0.5, 0.5) * deltaT)
-	a.Move(util.RandF64(0.5, 1) * deltaT)
+	a.Turn(util.RandF64(-1, 1) * deltaT)
+	a.Move(util.RandF64(10, 15) * deltaT)
 }
 
 func (a *Agent) Move(amount float64) {

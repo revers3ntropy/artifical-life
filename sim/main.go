@@ -3,19 +3,15 @@ package Sim
 import (
 	"epq/util"
 	"fmt"
-	"time"
 )
 
 func StartGameLoop(w *World) {
-	if w.Config.TickPeriod <= 0 {
-		panic("TickPeriod in config lte 0")
-	}
 
 	gl := util.GameLoop{
 		OnUpdate: func(delta float64) {
 			w.Update(delta)
 		},
-		TickRate: time.Duration(w.Config.TickPeriod) * time.Millisecond,
+		TickRate: w.Config.TickRate,
 		Quit:     make(chan bool),
 	}
 	fmt.Println("Starting game loop...")

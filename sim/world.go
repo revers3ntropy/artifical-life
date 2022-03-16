@@ -5,12 +5,13 @@ import (
 	"epq/util"
 	"fmt"
 	"math"
+	"time"
 )
 
 type Config struct {
 	NumAgents   int
 	SpawnBounds [4]float64
-	TickPeriod  int64
+	TickRate    time.Duration
 }
 
 type World struct {

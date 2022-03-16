@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-	"time"
 )
 
 const PORT = "8090"
@@ -75,7 +74,7 @@ func StartServer(world *Sim.World) {
 				}
 			}
 		},
-		TickRate: 500 * time.Millisecond,
+		TickRate: 30,
 		Quit:     make(chan bool),
 	}
 	gl.Start()
