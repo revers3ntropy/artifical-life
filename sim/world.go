@@ -9,9 +9,12 @@ import (
 )
 
 type Config struct {
-	NumAgents   int
-	SpawnBounds [4]float64
-	TickRate    time.Duration
+	NumAgents        int
+	SpawnBounds      [4]float64
+	TickRate         time.Duration
+	ServerUpdateRate time.Duration
+	TurnSpeed        float64
+	MoveSpeed        float64
 }
 
 type World struct {
@@ -42,7 +45,7 @@ func (w *World) InitialiseAgents() {
 
 func (w *World) Update(deltaT float64) {
 	for _, a := range w.Agents {
-		a.Update(deltaT)
+		a.Update(deltaT, w.Config)
 	}
 }
 

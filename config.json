@@ -1,7 +1,11 @@
 {
   "NumAgents": 10,
   "SpawnBounds": [
-    -500, -500, 500, 500
+    -500, -500,
+    500, 500
   ],
-  "TickRate": 30
+  "TickRate": 30,
+  "ServerUpdateRate": 30,
+  "TurnSpeed": 5,
+  "MoveSpeed": 30
 }

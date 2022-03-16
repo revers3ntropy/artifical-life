@@ -9,8 +9,6 @@ import (
 	"net/http"
 )
 
-const PORT = "8090"
-
 func setupResponse(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
@@ -26,7 +24,7 @@ var upgrader = websocket.Upgrader{
 }
 
 func StartServer(world *Sim.World) {
-	fmt.Print("Starting server on port " + PORT + "...\n")
+	fmt.Print("Starting server on port " + util.PORT + "...\n")
 
 	var connections []*websocket.Conn
 
@@ -74,10 +72,10 @@ func StartServer(world *Sim.World) {
 				}
 			}
 		},
-		TickRate: 30,
+		TickRate: world.Config.ServerUpdateRate,
 		Quit:     make(chan bool),
 	}
 	gl.Start()
 
-	log.Fatal(http.ListenAndServe(":"+PORT, nil))
+	log.Fatal(http.ListenAndServe(":"+util.PORT, nil))
 }
