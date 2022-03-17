@@ -131,17 +131,11 @@ let zoom_scaled_pos = func (pos: V2, zoom: Number, center: V2): V2 {
 
 let render = func () {
 	ctx.clearRect(0, 0, width, height);
+
 	let camera_pos = {
 		x: camera.x - width/2,
 		y: camera.y - height/2
 	};
-	// center marker
-	render_agent({
-		Pos: {
-			X: 0,
-			Y: 0
-		}
-	}, camera_pos);
 
 	for agent in world.Agents {
 		render_agent(agent, camera_pos);

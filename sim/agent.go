@@ -1,7 +1,6 @@
 package Sim
 
 import (
-	"epq/util"
 	"github.com/deeean/go-vector/vector2"
 	"math"
 )
@@ -16,12 +15,17 @@ func (a *Agent) Initialise(x float64, y float64, rot float64) {
 	a.Pos = vector2.New(x, y)
 	a.Rot = rot
 	a.NormaliseDirection()
-
 }
 
 func (a *Agent) Update(deltaT float64, config *Config) {
-	a.Turn(util.RandF64(-config.TurnSpeed, config.TurnSpeed) * deltaT)
-	a.Move(util.RandF64(config.MoveSpeed*0.75, config.MoveSpeed) * deltaT)
+	TickBrain(BrainIn{}, BrainOut{
+		Move: func(amount float64) {
+			a.Move(config.MoveSpeed * amount * deltaT)
+		},
+		Turn: func(amount float64) {
+			a.Turn(config.TurnSpeed * amount * deltaT)
+		},
+	})
 }
 
 func (a *Agent) Move(amount float64) {
