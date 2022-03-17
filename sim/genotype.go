@@ -21,6 +21,13 @@ type Genotype struct {
 	genes [util.GeneLength]float64
 }
 
+func (g *Genotype) Initialise() {
+	g.genes = [util.GeneLength]float64{}
+	for i := range g.genes {
+		g.genes[i] = util.RandF64(0, 1)
+	}
+}
+
 func (g *Genotype) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Colour string

@@ -107,7 +107,7 @@ let render_agent = func (agent, camera_pos: V2) {
 		}
 	);
 	let r = 10 * camera.zoom;
-	let colour = 'red';
+	let colour = agent.Genes.Colour;
 
 	ctx.arc(render_pos.x, render_pos.y, r, 0, m.PI * 2);
 

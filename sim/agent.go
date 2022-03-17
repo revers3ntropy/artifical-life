@@ -9,24 +9,22 @@ type Agent struct {
 	Id     int
 	Pos    *vector2.Vector2
 	Rot    float64
-	energy float64
-	weight float64
-	genes  *Genotype
-	brain  *Brain
+	Energy float64
+	Weight float64
+	Genes  *Genotype
+	Brain  *Brain
 }
 
 func (a *Agent) Initialise(x float64, y float64, rot float64) {
 	a.Pos = vector2.New(x, y)
 	a.Rot = rot
 	a.NormaliseDirection()
-
-	a.genes = &Genotype{
-		genes: [100]float64{},
-	}
+	a.Genes = &Genotype{}
+	a.Genes.Initialise()
 }
 
 func (a *Agent) Update(deltaT float64, config *Config) {
-	a.brain.Update(BrainIn{}, BrainOut{
+	a.Brain.Update(BrainIn{}, BrainOut{
 		Move: func(amount float64) {
 			a.Move(config.MoveSpeed * amount * deltaT)
 		},
@@ -46,7 +44,7 @@ func (a *Agent) Move(amount float64) {
 	by = by.Normalize()
 	by = by.MulScalar(amount)
 
-	a.energy -= amount * a.genes.MoveEfficiency()
+	a.Energy -= amount * a.Genes.MoveEfficiency()
 
 	a.Pos = a.Pos.Add(by)
 }
