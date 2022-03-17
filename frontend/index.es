@@ -28,13 +28,8 @@ var drag_end: V2 = {x: 0, y: 0};
 
 let drag = func (event) {
    drag_end = get_mouse_pos(event);
-	let diff = {
-		x: (drag_end.x - drag_start.x) / -camera.zoom,
-		y: (drag_end.y - drag_start.y) / -camera.zoom
-	};
-
-   camera.x += diff.x;
-   camera.y += diff.y;
+   camera.x += (drag_end.x - drag_start.x) / -camera.zoom;
+   camera.y += (drag_end.y - drag_start.y) / -camera.zoom;
    drag_start = drag_end;
    render();
 };

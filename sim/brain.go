@@ -12,7 +12,10 @@ type BrainOut struct {
 	Turn func(amount float64)
 }
 
-func TickBrain(in BrainIn, out BrainOut) {
+type Brain struct {
+}
+
+func (b *Brain) Update(in BrainIn, out BrainOut) {
 	out.Turn(util.RandF64(-1, 1))
 	out.Move(util.RandF64(0.5, 1))
 }

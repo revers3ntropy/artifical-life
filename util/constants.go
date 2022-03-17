@@ -1,3 +1,4 @@
 package util
 
-const PORT = "8090"
+const Port = "8090"
+const GeneLength = 100

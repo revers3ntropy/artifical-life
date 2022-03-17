@@ -24,7 +24,7 @@ var upgrader = websocket.Upgrader{
 }
 
 func StartServer(world *Sim.World) {
-	fmt.Print("Starting server on port " + util.PORT + "...\n")
+	fmt.Print("Starting server on port " + util.Port + "...\n")
 
 	var connections []*websocket.Conn
 
@@ -77,5 +77,5 @@ func StartServer(world *Sim.World) {
 	}
 	gl.Start()
 
-	log.Fatal(http.ListenAndServe(":"+util.PORT, nil))
+	log.Fatal(http.ListenAndServe(":"+util.Port, nil))
 }

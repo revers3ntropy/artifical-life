@@ -6,19 +6,27 @@ import (
 )
 
 type Agent struct {
-	Id  int
-	Pos *vector2.Vector2
-	Rot float64
+	Id     int
+	Pos    *vector2.Vector2
+	Rot    float64
+	energy float64
+	weight float64
+	genes  *Genotype
+	brain  *Brain
 }
 
 func (a *Agent) Initialise(x float64, y float64, rot float64) {
 	a.Pos = vector2.New(x, y)
 	a.Rot = rot
 	a.NormaliseDirection()
+
+	a.genes = &Genotype{
+		genes: [100]float64{},
+	}
 }
 
 func (a *Agent) Update(deltaT float64, config *Config) {
-	TickBrain(BrainIn{}, BrainOut{
+	a.brain.Update(BrainIn{}, BrainOut{
 		Move: func(amount float64) {
 			a.Move(config.MoveSpeed * amount * deltaT)
 		},
@@ -37,6 +45,8 @@ func (a *Agent) Move(amount float64) {
 	// limit magnitude
 	by = by.Normalize()
 	by = by.MulScalar(amount)
+
+	a.energy -= amount * a.genes.MoveEfficiency()
 
 	a.Pos = a.Pos.Add(by)
 }
