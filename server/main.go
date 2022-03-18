@@ -63,7 +63,12 @@ func StartServer(world *Sim.World, port string) {
 
 	gl := util.GameLoop{
 		OnUpdate: func(delta float64) {
+			if len(connections) < 1 {
+				return
+			}
+
 			data := []byte(world.SerializeWorldData())
+
 			for _, conn := range connections {
 				if err := conn.WriteMessage(websocket.TextMessage, data); err != nil {
 					removeConn(conn)

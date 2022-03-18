@@ -17,6 +17,8 @@ type Genotype struct {
 		3: blueness
 		4: movement efficiency
 		5: growth rate
+
+		100-n to 100: Input weights
 	*/
 	genes [util.GeneLength]float64
 }

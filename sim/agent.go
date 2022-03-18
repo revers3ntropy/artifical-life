@@ -21,15 +21,19 @@ func (a *Agent) Initialise(x float64, y float64, rot float64) {
 	a.NormaliseDirection()
 	a.Genes = &Genotype{}
 	a.Genes.Initialise()
+	a.Brain = &Brain{}
+	a.Brain.Initialise(a.Genes.genes)
 }
 
 func (a *Agent) Update(deltaT float64, config *Config) {
-	a.Brain.Update(BrainIn{}, BrainOut{
+	a.Brain.Update(BrainIn{
+		NeuralInputs: []float64{0.5, 0.5},
+	}, BrainOut{
 		Move: func(amount float64) {
 			a.Move(config.MoveSpeed * amount * deltaT)
 		},
 		Turn: func(amount float64) {
-			a.Turn(config.TurnSpeed * amount * deltaT)
+			a.Turn(config.MoveSpeed * amount * deltaT)
 		},
 	})
 }
