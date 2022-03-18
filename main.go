@@ -40,5 +40,5 @@ func main() {
 	util.SeedRand()
 	world := Sim.New(loadConfigFromFile())
 	Sim.StartGameLoop(world)
-	Server.StartServer(world)
+	Server.StartServer(world, util.Port)
 }

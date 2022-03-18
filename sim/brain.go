@@ -1,8 +1,7 @@
 package Sim
 
-import "epq/util"
-
 type BrainIn struct {
+	NeuralInputs []float64
 }
 
 type BrainOut struct {
@@ -13,9 +12,18 @@ type BrainOut struct {
 }
 
 type Brain struct {
+	NeuralNet *Network
+}
+
+func (b *Brain) Initialise(genes []float64) {
+
 }
 
 func (b *Brain) Update(in BrainIn, out BrainOut) {
-	out.Turn(util.RandF64(-1, 1))
-	out.Move(util.RandF64(0.5, 1))
+
+	for i, n := range b.NeuralNet.Inputs {
+		for _, syn := range n.GetEdges(b.NeuralNet.Synapses) {
+			syn.Traverse(in.NeuralInputs[i], b.NeuralNet.Synapses)
+		}
+	}
 }

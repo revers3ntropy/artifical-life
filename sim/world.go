@@ -34,6 +34,8 @@ func New(config *Config) *World {
 }
 
 func (w *World) InitialiseAgents() {
+	// Generates some agents
+	// random position and random rotation
 	for i := 0; i < w.Config.NumAgents; i++ {
 
 		x := util.RandF64(w.Config.SpawnBounds[0], w.Config.SpawnBounds[2])
@@ -41,6 +43,15 @@ func (w *World) InitialiseAgents() {
 
 		w.NewAgent(x, y, util.RandF64(0, math.Pi*2))
 	}
+}
+
+// SerializeWorldData - JSONify the world data
+func (w *World) SerializeWorldData() string {
+	res, err := json.Marshal(*w)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return string(res)
 }
 
 func (w *World) Update(deltaT float64) {
@@ -57,12 +68,4 @@ func (w *World) NewAgent(x float64, y float64, rot float64) *Agent {
 	w.Agents = append(w.Agents, agent)
 	w.LastID++
 	return agent
-}
-
-func (w *World) SerializeWorldData() string {
-	res, err := json.Marshal(*w)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return string(res)
 }

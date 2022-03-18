@@ -53,10 +53,16 @@ func (g *Genotype) GetMutated(mutationRate float64) *Genotype {
 }
 
 func (g *Genotype) Colour() string {
-	red := fmt.Sprintf("%f", 255*g.genes[0]*g.genes[1])
-	green := fmt.Sprintf("%f", 255*g.genes[0]*g.genes[2])
-	blue := fmt.Sprintf("%f", 255*g.genes[0]*g.genes[3])
-	return "rgb(" + red + ", " + green + ", " + blue + ")"
+	weight := []float64{0.4, 0.6}
+	red := 255 * util.WeightedProduct([]float64{g.genes[0], g.genes[1]}, weight)
+	green := 255 * util.WeightedProduct([]float64{g.genes[0], g.genes[2]}, weight)
+	blue := 255 * util.WeightedProduct([]float64{g.genes[0], g.genes[3]}, weight)
+
+	return "rgb(" +
+		fmt.Sprintf("%f", red) + ", " +
+		fmt.Sprintf("%f", green) + ", " +
+		fmt.Sprintf("%f", blue) +
+		")"
 }
 
 func (g *Genotype) MoveEfficiency() float64 {
@@ -69,5 +75,5 @@ func (g *Genotype) GrowthRate() float64 {
 }
 
 func (g *Genotype) RestingEfficiency() float64 {
-	return g.genes[5]
+	return util.WeightedProduct([]float64{g.genes[6], g.genes[4]}, []float64{0.8, 0.2})
 }
