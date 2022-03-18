@@ -36,6 +36,9 @@ func (a *Agent) Update(deltaT float64, config *Config) {
 			a.Turn(config.MoveSpeed * amount * deltaT)
 		},
 	})
+
+	a.Energy -= a.Genes.RestingEfficiency()
+	a.Weight += a.Genes.GrowthRate()
 }
 
 func (a *Agent) Move(amount float64) {

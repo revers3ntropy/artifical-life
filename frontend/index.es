@@ -3,33 +3,34 @@ let m = import('math');
 let json = import('json');
 let time = import('time');
 
+let V2 = import('vec').V2;
+
 let api_port = 8090;
 
 let canvas = $('#canvas')[0];
 let ctx = canvas.getContext('2d');
-
-let V2 = {
-	x: Number,
-	y: Number
-};
 
 var width = 0;
 var height = 0;
 
 let camera = {
     zoom: 1,
-    x: 0,
-    y: 0
+    pos: V2(0, 0)
 };
 
 var dragging = false;
-var drag_start: V2 = {x: 0, y: 0};
-var drag_end: V2 = {x: 0, y: 0};
+var drag_start: V2 = V2(0, 0);
+var drag_end: V2 = V2(0, 0);
+
+let Agent = {
+
+};
+
+var selected: Any = nil;
 
 let drag = func (event) {
-   drag_end = get_mouse_pos(event);
-   camera.x += (drag_end.x - drag_start.x) / -camera.zoom;
-   camera.y += (drag_end.y - drag_start.y) / -camera.zoom;
+   drag_end = get_mouse_pos_raw(event);
+   camera.pos += (drag_end - drag_start) / (-camera.zoom);
    drag_start = drag_end;
    render();
 };
@@ -42,6 +43,20 @@ let set_canvas_size = func () {
     render();
 };
 
+let agent_pos = func (agent: Object) {
+	return V2(agent['Pos']['X'], agent['Pos']['Y']);
+};
+
+let point_touching_agents = func (agents: (Array[Object]), point: V2): (Array[Object]) {
+	var touching: (Array[Any]) = [];
+	for agent in agents {
+		if point.dist(agent_pos(agent)) < agent_radius(agent) * camera.zoom {
+			touching += [agent];
+		}
+	}
+	return touching;
+};
+
 let setup_input_listeners = func () {
 	canvas.onwheel = func (evt) {
 		evt.preventDefault();
@@ -51,13 +66,18 @@ let setup_input_listeners = func () {
 	};
 
 	canvas.addEventListener('mousedown', func (event) {
-        drag_start = get_mouse_pos(event);
+        drag_start = get_mouse_pos_raw(event);
         dragging = true;
     });
 
 
-    canvas.addEventListener('mouseup', func () {
+    canvas.addEventListener('mouseup', func (event) {
         dragging = false;
+
+		let touching = point_touching_agents(world['Agents'], get_mouse_pos(event));
+		if touching.len() > 0 {
+			selected = touching[0];
+		}
     });
 
 	canvas.addEventListener('mousemove', func (evt) {
@@ -67,12 +87,24 @@ let setup_input_listeners = func () {
 	});
 };
 
-let get_mouse_pos = func (event): V2 {
+let get_mouse_pos_raw = func (event): V2 {
     let rect = canvas.getBoundingClientRect();
-    return {
-        x: (event.pageX - rect.left) * canvas.width / rect.width,
-        y: (event.pageY - rect.top) * canvas.height / rect.height
-    };
+
+	return zoom_scaled_pos(
+		V2(
+			(event.pageX - rect.left) * canvas.width / rect.width,
+			(event.pageY - rect.top) * canvas.height / rect.height
+		),
+		1/camera.zoom,
+		V2(
+			width/2,
+			height/2
+		)
+	);
+};
+
+let get_mouse_pos = func (event): V2 {
+	return get_mouse_pos_raw(event) + camera.pos - V2(width/2, height/2);
 };
 
 var world = {
@@ -92,21 +124,23 @@ let start_server_connection = func () {
 	});
 };
 
+let agent_radius = func (agent) m.sqrt(agent.Weight / m.PI);
+
 let render_agent = func (agent, camera_pos: V2) {
 	ctx.beginPath();
 
 	let render_pos: V2 = zoom_scaled_pos(
-		{
-			x: agent['Pos']['X'] - camera_pos.x,
-			y: agent['Pos']['Y'] - camera_pos.y
-		},
+		V2(
+			agent['Pos']['X'] - camera_pos.x,
+			agent['Pos']['Y'] - camera_pos.y
+		),
 		camera.zoom,
-		{
-			x: width/2,
-			y: height/2
-		}
+		V2(
+			width/2,
+			height/2
+		)
 	);
-	let r = 10 * camera.zoom;
+	let r = agent_radius(agent) * camera.zoom;
 	let colour = agent.Genes.Colour;
 
 	ctx.arc(render_pos.x, render_pos.y, r, 0, m.PI * 2);
@@ -117,20 +151,18 @@ let render_agent = func (agent, camera_pos: V2) {
 	ctx.closePath();
 };
 
+// 1 / zoom for reverse
 let zoom_scaled_pos = func (pos: V2, zoom: Number, center: V2): V2 {
-    return {
-    	x: (pos.x - center.x) * zoom + center.x,
-    	y: (pos.y - center.y) * zoom + center.y
-    };
+    return (pos - center) * zoom + center;
 };
 
 let render = func () {
 	ctx.clearRect(0, 0, width, height);
 
-	let camera_pos = {
-		x: camera.x - width/2,
-		y: camera.y - height/2
-	};
+	let camera_pos = V2(
+		camera.pos.x - width/2,
+		camera.pos.y - height/2
+	);
 
 	for agent in world.Agents {
 		render_agent(agent, camera_pos);
@@ -141,6 +173,10 @@ let main = func () {
 	set_canvas_size();
 	setup_input_listeners();
     start_server_connection();
+
+    window.setTimeout(func () {
+    	window.location.reload();
+    }, 60 * 1000);
 };
 
 main();
