@@ -4,6 +4,7 @@ let json = import('json');
 let time = import('time');
 
 let V2 = import('vec').V2;
+let update_sidebar = import('sidebar').update;
 
 let api_port = 8090;
 
@@ -26,7 +27,19 @@ let Agent = {
 
 };
 
-var selected: Any = nil;
+var world = {
+	Agents: []
+};
+
+var selected: Number = -1;
+
+let agent_by_id = func (id: Number) {
+	for agent in world['Agents'] {
+		if agent['Id'] == id {
+			return agent;
+		}
+	}
+};
 
 let drag = func (event) {
    drag_end = get_mouse_pos_raw(event);
@@ -76,7 +89,9 @@ let setup_input_listeners = func () {
 
 		let touching = point_touching_agents(world['Agents'], get_mouse_pos(event));
 		if touching.len() > 0 {
-			selected = touching[0];
+			selected = touching[0]['Id'];
+		} else if (get_mouse_pos(event).dist(drag_start) < 5) {
+			selected = -1;
 		}
     });
 
@@ -105,10 +120,6 @@ let get_mouse_pos_raw = func (event): V2 {
 
 let get_mouse_pos = func (event): V2 {
 	return get_mouse_pos_raw(event) + camera.pos - V2(width/2, height/2);
-};
-
-var world = {
-	Agents: []
 };
 
 let start_server_connection = func () {
@@ -167,6 +178,8 @@ let render = func () {
 	for agent in world.Agents {
 		render_agent(agent, camera_pos);
 	}
+
+	update_sidebar(agent_by_id(selected));
 };
 
 let main = func () {

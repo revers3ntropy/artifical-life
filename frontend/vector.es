@@ -38,9 +38,17 @@ let V2 = class {
 		}
 	}
 
+	__eq__ (o: Any) {
+		return o.isa(V2) && o.x == this.x && o.y == this.y;
+	}
+
 	dist (o: Any): Number {
 		if o.isa(V2) {
 			return m.sqrt(((this.x - o.x) ^ 2) + ((this.y - o.y) ^ 2));
 		}
+	}
+
+	mod ():	Number {
+		return m.sqrt(this.x ^ 2 + this.y ^ 2);
 	}
 };

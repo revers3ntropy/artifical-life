@@ -6,8 +6,8 @@ import (
 )
 
 type Agent struct {
+	Entity
 	Id     int
-	Pos    *vector2.Vector2
 	Rot    float64
 	Energy float64
 	Weight float64

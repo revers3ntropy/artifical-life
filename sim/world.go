@@ -18,16 +18,16 @@ type Config struct {
 }
 
 type World struct {
-	Agents []*Agent
-	LastID int
-	Config *Config
+	Entities []*Entity
+	LastID   int
+	Config   *Config
 }
 
 func New(config *Config) *World {
 	world := &World{
-		LastID: 0,
-		Agents: []*Agent{},
-		Config: config,
+		LastID:   0,
+		Entities: []*Entity{},
+		Config:   config,
 	}
 	world.InitialiseAgents()
 	return world
@@ -55,7 +55,7 @@ func (w *World) SerializeWorldData() string {
 }
 
 func (w *World) Update(deltaT float64) {
-	for _, a := range w.Agents {
+	for _, a := range w.Entities {
 		a.Update(deltaT, w.Config)
 	}
 }
@@ -65,7 +65,7 @@ func (w *World) NewAgent(x float64, y float64, rot float64) *Agent {
 		Id: w.LastID,
 	}
 	agent.Initialise(x, y, rot)
-	w.Agents = append(w.Agents, agent)
+	w.Entities = append(w.Entities, agent)
 	w.LastID++
 	return agent
 }

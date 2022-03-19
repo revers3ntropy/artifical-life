@@ -43,16 +43,20 @@ func StartServer(world *Sim.World, port string) {
 		}
 
 		if r.Method != "POST" {
-			fmt.Fprintf(w, "404 Invalid method")
+			_, err := fmt.Fprintf(w, "Invalid method")
+			if err != nil {
+				fmt.Println(err)
+			}
 			return
 		}
-
-		fmt.Fprintf(w, world.SerializeWorldData())
+		_, err := fmt.Fprintf(w, world.SerializeWorldData())
+		if err != nil {
+			fmt.Println(err)
+		}
 	})
 
 	http.HandleFunc("/start-connection", func(w http.ResponseWriter, r *http.Request) {
 		conn, err := upgrader.Upgrade(w, r, nil)
-
 		if err != nil {
 			fmt.Println(err)
 			return
