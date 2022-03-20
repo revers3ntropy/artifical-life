@@ -34,8 +34,8 @@ func (b *Brain) Initialise(genes [util.GeneLength]float64) {
 	// Initialise the layers
 	prevLayerNodes := util.NumOfNeuralInputs
 
+	// input layer
 	b.NeuralNet.Layers[0] = &Layer{
-		// input layer
 		numNodes: util.NumOfNeuralInputs,
 		Weights:  util.RandMat(util.NumOfNeuralInputs, util.NumOfNeuralInputs),
 		Biases:   util.RangedRandVec(util.NumOfNeuralInputs, 0, 0),
@@ -70,11 +70,11 @@ func (b *Brain) ExecuteBrainOutput(dt float64, e *Entity, output la.Vector) {
 	e.Turn((output[1]*dt - 0.5) * 0.05)
 }
 
-var outs []float64
+var outs []la.Vector
 
 func (b *Brain) Update(dt float64, e *Entity) {
 	if outs == nil {
-		outs = []float64{}
+		outs = []la.Vector{}
 	}
 	input := util.RandVec(util.NumOfNeuralInputs)
 	//input := []float64{0, 0, 0, 0, 0}
@@ -82,11 +82,18 @@ func (b *Brain) Update(dt float64, e *Entity) {
 	b.ExecuteBrainOutput(dt, e, output)
 
 	fmt.Println("Final output: ", output)
-	outs = append(outs, output[0])
 
-	means := outs[0]
-	for j := 0; j < len(outs); j++ {
-		means += outs[j]
+	outs = append(outs, output)
+
+	means := [util.NumOfNeuralOutputs]float64{}
+	for i := 0; i < len(outs); i++ {
+		for j := 0; j < len(outs[i]); j++ {
+			means[j] += outs[i][j]
+		}
 	}
-	fmt.Println("mean: ", means/float64(len(outs)))
+
+	for j := 0; j < len(means); j++ {
+		fmt.Println("mean", j, ":", means[j]/float64(len(outs)))
+	}
+
 }
