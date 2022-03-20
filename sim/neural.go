@@ -1,13 +1,13 @@
 package Sim
 
 import (
-	"fmt"
 	"github.com/cpmech/gosl/la"
 	"math"
 )
 
 func ActivationFunc(n float64) float64 {
 	return math.Abs(math.Tanh(n))
+	//return 1 / (1 + math.Exp(-n))
 }
 
 type Layer struct {
@@ -43,6 +43,5 @@ func (n *Network) Run(input la.Vector) la.Vector {
 	for _, l := range n.Layers {
 		current = l.Activate(current)
 	}
-	fmt.Println(current)
 	return current
 }

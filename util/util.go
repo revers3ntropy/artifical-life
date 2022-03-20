@@ -36,7 +36,7 @@ func RandMat(m int, n int) *la.Matrix {
 	w := la.NewMatrix(m, n)
 	for x := 0; x < m; x++ {
 		for y := 0; y < n; y++ {
-			w.Set(x, y, RandF64(0, 1))
+			w.Set(x, y, RandF64(-1, 1))
 		}
 	}
 	return w
@@ -45,7 +45,7 @@ func RandMat(m int, n int) *la.Matrix {
 func RandVec(n int) la.Vector {
 	w := la.NewVector(n)
 	for i := 0; i < n; i++ {
-		w[i] = RandF64(0, 1)
+		w[i] = RandF64(-1, 1)
 	}
 	return w
 }
