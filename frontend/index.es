@@ -11,30 +11,30 @@ let api_port = 8090;
 let canvas = $('#canvas')[0];
 let ctx = canvas.getContext('2d');
 
-var width = 0;
-var height = 0;
+let var width = 0;
+let var height = 0;
 
 let camera = {
     zoom: 1,
     pos: V2(0, 0)
 };
 
-var dragging = false;
-var drag_start: V2 = V2(0, 0);
-var drag_end: V2 = V2(0, 0);
+let var dragging = false;
+let var drag_start: V2 = V2(0, 0);
+let var drag_end: V2 = V2(0, 0);
 
 let Agent = {
 
 };
 
-var world = {
-	Agents: []
+let var world = {
+	Entities: []
 };
 
-var selected: Number = -1;
+let var selected: Number = -1;
 
 let agent_by_id = func (id: Number) {
-	for agent in world['Agents'] {
+	for agent in world['Entities'] {
 		if agent['Id'] == id {
 			return agent;
 		}
@@ -61,7 +61,7 @@ let agent_pos = func (agent: Object) {
 };
 
 let point_touching_agents = func (agents: (Array[Object]), point: V2): (Array[Object]) {
-	var touching: (Array[Any]) = [];
+	let var touching: (Array[Any]) = [];
 	for agent in agents {
 		if point.dist(agent_pos(agent)) < agent_radius(agent) * camera.zoom {
 			touching += [agent];
@@ -87,7 +87,7 @@ let setup_input_listeners = func () {
     canvas.addEventListener('mouseup', func (event) {
         dragging = false;
 
-		let touching = point_touching_agents(world['Agents'], get_mouse_pos(event));
+		let touching = point_touching_agents(world['Entities'], get_mouse_pos(event));
 		if touching.len() > 0 {
 			selected = touching[0]['Id'];
 		} else if (get_mouse_pos(event).dist(drag_start) < 5) {
@@ -135,7 +135,7 @@ let start_server_connection = func () {
 	});
 };
 
-let agent_radius = func (agent) m.sqrt(agent.Weight / m.PI);
+let agent_radius = func (agent) m.sqrt(agent.Weight / m.PI) + 2;
 
 let render_agent = func (agent, camera_pos: V2) {
 	ctx.beginPath();
@@ -175,7 +175,7 @@ let render = func () {
 		camera.pos.y - height/2
 	);
 
-	for agent in world.Agents {
+	for agent in world['Entities'] {
 		render_agent(agent, camera_pos);
 	}
 

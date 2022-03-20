@@ -11,7 +11,7 @@ func StartGameLoop(w *World) {
 		OnUpdate: func(delta float64) {
 			w.Update(delta)
 		},
-		TickRate: w.Config.TickRate,
+		TickRate: util.TickRate,
 		Quit:     make(chan bool),
 	}
 	fmt.Println("Starting game loop...")

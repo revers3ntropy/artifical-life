@@ -81,7 +81,7 @@ func StartServer(world *Sim.World, port string) {
 				}
 			}
 		},
-		TickRate: world.Config.ServerUpdateRate,
+		TickRate: util.ServerUpdateRate,
 		Quit:     make(chan bool),
 	}
 	gl.Start()

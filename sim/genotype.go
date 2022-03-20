@@ -18,12 +18,23 @@ type Genotype struct {
 		4: movement efficiency
 		5: growth rate
 
+		10: start of num of hidden layers for brain
+		11: num of   ^
+		12: step for ^
+
 		100-n to 100: Input weights
 	*/
 	genes [util.GeneLength]float64
 }
 
 func (g *Genotype) Initialise() {
+	g.genes = [util.GeneLength]float64{}
+	for i := range g.genes {
+		g.genes[i] = util.RandF64(0, 1)
+	}
+}
+
+func (g *Genotype) Update() {
 	g.genes = [util.GeneLength]float64{}
 	for i := range g.genes {
 		g.genes[i] = util.RandF64(0, 1)

@@ -5,29 +5,17 @@ import (
 	"epq/util"
 	"fmt"
 	"math"
-	"time"
 )
-
-type Config struct {
-	NumAgents        int
-	SpawnBounds      [4]float64
-	TickRate         time.Duration
-	ServerUpdateRate time.Duration
-	TurnSpeed        float64
-	MoveSpeed        float64
-}
 
 type World struct {
 	Entities []*Entity
 	LastID   int
-	Config   *Config
 }
 
-func New(config *Config) *World {
+func New() *World {
 	world := &World{
 		LastID:   0,
 		Entities: []*Entity{},
-		Config:   config,
 	}
 	world.InitialiseAgents()
 	return world
@@ -36,10 +24,10 @@ func New(config *Config) *World {
 func (w *World) InitialiseAgents() {
 	// Generates some agents
 	// random position and random rotation
-	for i := 0; i < w.Config.NumAgents; i++ {
+	for i := 0; i < util.NumAgents; i++ {
 
-		x := util.RandF64(w.Config.SpawnBounds[0], w.Config.SpawnBounds[2])
-		y := util.RandF64(w.Config.SpawnBounds[1], w.Config.SpawnBounds[3])
+		x := util.RandF64(util.SpawnBounds[0], util.SpawnBounds[2])
+		y := util.RandF64(util.SpawnBounds[1], util.SpawnBounds[3])
 
 		w.NewAgent(x, y, util.RandF64(0, math.Pi*2))
 	}
@@ -56,15 +44,19 @@ func (w *World) SerializeWorldData() string {
 
 func (w *World) Update(deltaT float64) {
 	for _, a := range w.Entities {
-		a.Update(deltaT, w.Config)
+		a.Update(deltaT)
 	}
 }
 
-func (w *World) NewAgent(x float64, y float64, rot float64) *Agent {
-	agent := &Agent{
-		Id: w.LastID,
+func (w *World) NewAgent(x float64, y float64, rot float64) *Entity {
+	agent := &Entity{
+		Id:     w.LastID,
+		Weight: util.StartWeight,
+		Energy: util.StartEnergy,
 	}
-	agent.Initialise(x, y, rot)
+	agent.Initialise(Agent, x, y)
+	agent.Rot = rot
+	agent.NormaliseDirection()
 	w.Entities = append(w.Entities, agent)
 	w.LastID++
 	return agent
