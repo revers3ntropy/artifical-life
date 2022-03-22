@@ -133,6 +133,10 @@ let start_server_connection = func () {
 		world = json.parse(event.data);
 		render();
 	});
+
+	socket.addEventListener('close', func (event) {
+
+	})
 };
 
 let agent_radius = func (agent) m.sqrt(agent.Weight / m.PI) + 2;

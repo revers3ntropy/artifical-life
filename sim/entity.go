@@ -35,16 +35,16 @@ func (a *Entity) Initialise(t EntityType, x float64, y float64) {
 
 		a.Brain = &Brain{}
 		a.Brain.Initialise(a.Genes.genes)
-	case Food:
-
 	}
 }
 
 func (a *Entity) Update(deltaT float64) {
 	a.Brain.Update(deltaT, a)
 
-	a.Energy -= a.Genes.RestingEfficiency()
-	a.Weight += a.Genes.GrowthRate()
+	if a.Genes != nil {
+		a.Energy -= a.Genes.RestingEfficiency()
+		a.Weight += a.Genes.GrowthRate()
+	}
 }
 
 func (a *Entity) Move(amount float64) {

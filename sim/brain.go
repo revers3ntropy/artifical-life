@@ -5,6 +5,7 @@ import (
 	"epq/util"
 	"fmt"
 	"github.com/cpmech/gosl/la"
+	"math"
 )
 
 type NeuralInputs [util.NumOfNeuralInputs]float64
@@ -27,8 +28,7 @@ func (b *Brain) Initialise(genes [util.GeneLength]float64) {
 	b.NeuralNet = &Network{}
 
 	// +2 for in/out layers
-	//layers := int(math.Min(math.Abs(math.Round(genes[11]/genes[12])), util.MaxLayers)) + 2
-	layers := 2
+	layers := int(math.Min(math.Abs(math.Round(genes[11]/genes[12])), util.MaxLayers)) + 2
 	b.NeuralNet.Initialise(layers)
 
 	// Initialise the layers
