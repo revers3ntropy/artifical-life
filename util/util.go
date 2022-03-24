@@ -2,6 +2,7 @@ package util
 
 import (
 	"github.com/cpmech/gosl/la"
+	"github.com/deeean/go-vector/vector2"
 	"math/rand"
 	"time"
 )
@@ -48,6 +49,14 @@ func RandVec(n int) la.Vector {
 		w[i] = RandF64(-1, 1)
 	}
 	return w
+}
+
+func RandVec2() *vector2.Vector2 {
+	return vector2.New(RandF64(-1, 1), RandF64(-1, 1))
+}
+
+func RangedRandVec2(min float64, max float64) *vector2.Vector2 {
+	return vector2.New(RandF64(min, max), RandF64(min, max))
 }
 
 func RangedRandMat(m int, n int, min float64, max float64) *la.Matrix {

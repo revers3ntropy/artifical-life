@@ -46,6 +46,26 @@ func (w *World) Update(deltaT float64) {
 	for _, a := range w.Entities {
 		a.Update(deltaT)
 	}
+
+	if util.RandF64(0, 1) > 0.95 {
+		w.SpawnRandFood()
+	}
+}
+
+func (w *World) SpawnRandFood() {
+	e := util.RandF64(2, 5)
+	w.Entities = append(w.Entities, &Entity{
+		Type:   Food,
+		Id:     w.LastID,
+		Pos:    util.RangedRandVec2(-100, 100),
+		Rot:    0,
+		Alive:  false,
+		Energy: e,
+		Weight: e,
+		Genes:  nil,
+		Brain:  nil,
+	})
+	w.LastID++
 }
 
 func (w *World) NewAgent(x float64, y float64, rot float64) *Entity {
