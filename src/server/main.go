@@ -1,8 +1,8 @@
 package Server
 
 import (
-	Sim "epq/sim"
-	"epq/util"
+	"epq/src/sim"
+	util2 "epq/src/util"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
@@ -65,7 +65,7 @@ func StartServer(world *Sim.World, port string) {
 		connections = append(connections, conn)
 	})
 
-	gl := util.GameLoop{
+	gl := util2.GameLoop{
 		OnUpdate: func(delta float64) {
 			if len(connections) < 1 {
 				return
@@ -81,7 +81,7 @@ func StartServer(world *Sim.World, port string) {
 				}
 			}
 		},
-		TickRate: util.ServerUpdateRate,
+		TickRate: util2.ServerUpdateRate,
 		Quit:     make(chan bool),
 	}
 	gl.Start()

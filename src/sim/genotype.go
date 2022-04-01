@@ -2,7 +2,7 @@ package Sim
 
 import (
 	"encoding/json"
-	"epq/util"
+	util2 "epq/src/util"
 	"fmt"
 	"math"
 )
@@ -24,20 +24,20 @@ type Genotype struct {
 
 		100-n to 100: Input weights
 	*/
-	genes [util.GeneLength]float64
+	genes [util2.GeneLength]float64
 }
 
 func (g *Genotype) Initialise() {
-	g.genes = [util.GeneLength]float64{}
+	g.genes = [util2.GeneLength]float64{}
 	for i := range g.genes {
-		g.genes[i] = util.RandF64(0, 1)
+		g.genes[i] = util2.RandF64(0, 1)
 	}
 }
 
 func (g *Genotype) Update() {
-	g.genes = [util.GeneLength]float64{}
+	g.genes = [util2.GeneLength]float64{}
 	for i := range g.genes {
-		g.genes[i] = util.RandF64(0, 1)
+		g.genes[i] = util2.RandF64(0, 1)
 	}
 }
 
@@ -56,9 +56,9 @@ func (g *Genotype) Clone() *Genotype {
 }
 
 func (g *Genotype) GetMutated(mutationRate float64) *Genotype {
-	genes := [util.GeneLength]float64{}
+	genes := [util2.GeneLength]float64{}
 	for i := range genes {
-		genes[i] += mutationRate * util.RandF64(-1, 1)
+		genes[i] += mutationRate * util2.RandF64(-1, 1)
 		// limit to 0, 1
 		genes[i] = math.Min(math.Max(genes[i], 0), 1)
 	}
@@ -67,9 +67,9 @@ func (g *Genotype) GetMutated(mutationRate float64) *Genotype {
 
 func (g *Genotype) Colour() string {
 	weight := []float64{0.4, 0.6}
-	red := 255 * util.WeightedProduct([]float64{g.genes[0], g.genes[1]}, weight)
-	green := 255 * util.WeightedProduct([]float64{g.genes[0], g.genes[2]}, weight)
-	blue := 255 * util.WeightedProduct([]float64{g.genes[0], g.genes[3]}, weight)
+	red := 255 * util2.WeightedProduct([]float64{g.genes[0], g.genes[1]}, weight)
+	green := 255 * util2.WeightedProduct([]float64{g.genes[0], g.genes[2]}, weight)
+	blue := 255 * util2.WeightedProduct([]float64{g.genes[0], g.genes[3]}, weight)
 
 	return "rgb(" +
 		fmt.Sprintf("%f", red) + ", " +
@@ -88,5 +88,5 @@ func (g *Genotype) GrowthRate() float64 {
 }
 
 func (g *Genotype) RestingEfficiency() float64 {
-	return util.WeightedProduct([]float64{g.genes[6], g.genes[4]}, []float64{0.8, 0.2})
+	return util2.WeightedProduct([]float64{g.genes[6], g.genes[4]}, []float64{0.8, 0.2})
 }
