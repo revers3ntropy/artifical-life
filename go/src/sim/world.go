@@ -13,12 +13,12 @@ type World struct {
 }
 
 func New() *World {
-	world := &World{
+	World := &World{
 		LastID:   0,
 		Entities: []*Entity{},
 	}
-	world.InitialiseAgents()
-	return world
+	World.InitialiseAgents()
+	return World
 }
 
 func (w *World) InitialiseAgents() {
@@ -33,7 +33,7 @@ func (w *World) InitialiseAgents() {
 	}
 }
 
-// SerializeWorldData - JSONify the world data
+// SerializeWorldData - JSONify the World data
 func (w *World) SerializeWorldData() string {
 	res, err := json.Marshal(*w)
 	if err != nil {

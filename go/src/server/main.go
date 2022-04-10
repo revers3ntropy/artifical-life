@@ -23,7 +23,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func StartServer(world *Sim.World, port string) {
+func StartServer(World *Sim.World, port string) {
 	fmt.Print("Starting server on port " + port + "...\n")
 
 	var connections []*websocket.Conn
@@ -49,7 +49,7 @@ func StartServer(world *Sim.World, port string) {
 			}
 			return
 		}
-		_, err := fmt.Fprintf(w, world.SerializeWorldData())
+		_, err := fmt.Fprintf(w, World.SerializeWorldData())
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -71,7 +71,7 @@ func StartServer(world *Sim.World, port string) {
 				return
 			}
 
-			data := []byte(world.SerializeWorldData())
+			data := []byte(World.SerializeWorldData())
 
 			for _, conn := range connections {
 				if err := conn.WriteMessage(websocket.TextMessage, data); err != nil {

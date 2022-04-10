@@ -8,7 +8,7 @@ import (
 
 func main() {
 	util2.SeedRand()
-	world := Sim.New()
-	Sim.Sim.StartGameLoop(world)
-	Server.Server.StartServer(world, util2.Port)
+	World := Sim.New()
+	Sim.Sim.StartGameLoop(World)
+	Server.Server.StartServer(World, util2.Port)
 }
