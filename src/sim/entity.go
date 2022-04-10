@@ -35,11 +35,16 @@ func (a *Entity) Initialise(t EntityType, x float64, y float64) {
 
 		a.Brain = &Brain{}
 		a.Brain.Initialise(a.Genes.genes)
+	case Food:
+
 	}
 }
 
 func (a *Entity) Update(deltaT float64) {
-	a.Brain.Update(deltaT, a)
+
+	if a.Brain != nil {
+		a.Brain.Update(deltaT, a)
+	}
 
 	if a.Genes != nil {
 		a.Energy -= a.Genes.RestingEfficiency()
@@ -73,4 +78,18 @@ func (a *Entity) NormaliseDirection() {
 func (a *Entity) Turn(amount float64) {
 	a.Rot += amount
 	a.NormaliseDirection()
+}
+
+func (a *Entity) Die() {
+	switch a.Type {
+	case Agent:
+		a.Type = Food
+		a.Alive = false
+		a.Genes = nil
+		a.Brain = nil
+	case Food:
+		a.Energy = 0
+		a.Weight = 0
+	}
+
 }
