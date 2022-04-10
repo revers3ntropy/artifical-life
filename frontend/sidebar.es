@@ -3,7 +3,7 @@ let m = import('math');
 
 let sidebar = document.getElementById('sidebar');
 
-let update = func (selected) {
+func update (selected) {
 
 	if (!selected) {
 		sidebar.innerHTML = `

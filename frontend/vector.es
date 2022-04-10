@@ -1,7 +1,10 @@
 let m = import('math');
 
-let V2 = class {
-	init (x: Number, y: Number) {
+class V2 {
+	x: Num;
+	y: Num;
+
+	init (x: Num, y: Num) {
 		this.x = x;
 		this.y = y;
 	}
@@ -42,13 +45,13 @@ let V2 = class {
 		return o.isa(V2) && o.x == this.x && o.y == this.y;
 	}
 
-	dist (o: Any): Number {
+	dist (o: Any): Num {
 		if o.isa(V2) {
 			return m.sqrt(((this.x - o.x) ^ 2) + ((this.y - o.y) ^ 2));
 		}
 	}
 
-	mod ():	Number {
+	mod ():	Num {
 		return m.sqrt(this.x ^ 2 + this.y ^ 2);
 	}
 };

@@ -3,7 +3,7 @@ let m = import('math');
 let json = import('json');
 let time = import('time');
 
-let V2 = import('vec').V2;
+let [ V2 ] = import('vec');
 let update_sidebar = import('sidebar').update;
 
 let api_port = 8090;
@@ -23,17 +23,17 @@ let var dragging = false;
 let var drag_start: V2 = V2(0, 0);
 let var drag_end: V2 = V2(0, 0);
 
-let Agent = {
-
-};
+let Agent = interface({
+	Pos: Any
+});
 
 let var world = {
 	Entities: []
 };
 
-let var selected: Number = -1;
+let var selected: Num = -1;
 
-let agent_by_id = func (id: Number) {
+func agent_by_id (id: Num) {
 	for agent in world['Entities'] {
 		if agent['Id'] == id {
 			return agent;
@@ -41,14 +41,14 @@ let agent_by_id = func (id: Number) {
 	}
 };
 
-let drag = func (event) {
+func drag (event) {
    drag_end = get_mouse_pos_raw(event);
    camera.pos += (drag_end - drag_start) / (-camera.zoom);
    drag_start = drag_end;
    render();
 };
 
-let set_canvas_size = func () {
+func set_canvas_size () {
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
     width = canvas.width;
@@ -56,12 +56,12 @@ let set_canvas_size = func () {
     render();
 };
 
-let agent_pos = func (agent: Object) {
+func agent_pos (agent: Obj) {
 	return V2(agent['Pos']['X'], agent['Pos']['Y']);
 };
 
-let point_touching_agents = func (agents: (Array[Object]), point: V2): (Array[Object]) {
-	let var touching: (Array[Any]) = [];
+func point_touching_agents (agents: (Arr[Obj]), point: V2): (Arr[Obj]) {
+	let var touching: (Arr[Any]) = [];
 	for agent in agents {
 		if point.dist(agent_pos(agent)) < agent_radius(agent) * camera.zoom {
 			touching += [agent];
@@ -70,7 +70,7 @@ let point_touching_agents = func (agents: (Array[Object]), point: V2): (Array[Ob
 	return touching;
 };
 
-let setup_input_listeners = func () {
+func setup_input_listeners () {
 	canvas.onwheel = func (evt) {
 		evt.preventDefault();
 		camera.zoom *= 1 + (evt.deltaY * -0.001);
@@ -102,7 +102,7 @@ let setup_input_listeners = func () {
 	});
 };
 
-let get_mouse_pos_raw = func (event): V2 {
+func get_mouse_pos_raw (event): V2 {
     let rect = canvas.getBoundingClientRect();
 
 	return zoom_scaled_pos(
@@ -118,11 +118,11 @@ let get_mouse_pos_raw = func (event): V2 {
 	);
 };
 
-let get_mouse_pos = func (event): V2 {
+func get_mouse_pos (event): V2 {
 	return get_mouse_pos_raw(event) + camera.pos - V2(width/2, height/2);
 };
 
-let start_server_connection = func () {
+func start_server_connection () {
 	let socket = window.WebSocket('ws://' + window.location.hostname + ':' + api_port.str() + '/start-connection');
 
 	socket.addEventListener('open', func (event) {
@@ -139,9 +139,9 @@ let start_server_connection = func () {
 	})
 };
 
-let agent_radius = func (agent) m.sqrt(agent.Weight / m.PI) + 2;
+func agent_radius (agent) m.sqrt(agent.Weight / m.PI) + 2;
 
-let render_agent = func (agent, camera_pos: V2) {
+func render_agent (agent, camera_pos: V2) {
 	ctx.beginPath();
 
 	let render_pos: V2 = zoom_scaled_pos(
@@ -167,17 +167,14 @@ let render_agent = func (agent, camera_pos: V2) {
 };
 
 // 1 / zoom for reverse
-let zoom_scaled_pos = func (pos: V2, zoom: Number, center: V2): V2 {
+func zoom_scaled_pos (pos: V2, zoom: Num, center: V2): V2 {
     return (pos - center) * zoom + center;
 };
 
-let render = func () {
+func render () {
 	ctx.clearRect(0, 0, width, height);
 
-	let camera_pos = V2(
-		camera.pos.x - width/2,
-		camera.pos.y - height/2
-	);
+	let camera_pos = camera.pos - V2(width, height)/2;
 
 	for agent in world['Entities'] {
 		render_agent(agent, camera_pos);
@@ -186,14 +183,15 @@ let render = func () {
 	update_sidebar(agent_by_id(selected));
 };
 
-let main = func () {
+func main () {
 	set_canvas_size();
 	setup_input_listeners();
     start_server_connection();
 
-    window.setTimeout(func () {
-    	window.location.reload();
-    }, 60 * 1000);
+	// not a very nice solution to memory management lol
+    window.setTimeout(window.location.reload, 60 * 1000);
 };
 
-main();
+if __main__ {
+	main();
+}
