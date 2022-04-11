@@ -1,5 +1,7 @@
 use crate::sim::entity::Entity;
 use crate::sim::agent::{ Agent };
+use serde::{Serialize, Serializer};
+use serde::ser::SerializeStruct;
 
 pub struct World {
     pub entities: Vec<Box<dyn Entity>>
@@ -25,5 +27,23 @@ impl World {
         let _ = self.entities
             .iter()
             .map(|e| Entity::update(e.as_ref(), d_t));
+    }
+}
+
+
+impl Serialize for World {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer,
+    {
+        let mut s = serializer.serialize_struct("World", 1)?;
+        s.serialize_field("entities",
+                          &self.entities
+                              .iter()
+                              .map(|a| {
+                                  a.serialize()
+                                      .expect("Failed to serialize entity");
+                              }))?;
+        s.end()
     }
 }

@@ -1,13 +1,12 @@
 use crate::sim::entity::Entity;
 use serde;
+use serde::ser::SerializeStruct;
+use serde::Serializer;
 
 
-#[derive(serde::Deserialize)]
 pub struct Agent {
-    #[serde()]
-    pub(crate) x: f64,
-    #[serde()]
-    pub(crate) y: f64,
+    pub x: f64,
+    pub y: f64,
 }
 
 
@@ -18,5 +17,15 @@ impl Entity for Agent {
 
     fn update (&self, d_t: u64) {
 
+    }
+
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer,
+    {
+        let mut s = serializer.serialize_struct("Entity", 2)?;
+        s.serialize_field("x", &self.x)?;
+        s.serialize_field("y", &self.y)?;
+        s.end()
     }
 }
