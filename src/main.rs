@@ -3,6 +3,6 @@ mod sim;
 
 fn main() {
     let world = sim::create();
-    sim::gameloop::run_game_loop(&world, 60);
+    let _ = sim::gameloop::run_game_loop(&world, 30);
     server::start_server(&world);
 }
