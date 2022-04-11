@@ -5,11 +5,16 @@ pub struct World {
 }
 
 impl World {
-    fn init () {
-
+    pub fn init (&self) {
+        // initialises entities
+        let _ = self.entities
+            .iter()
+            .map(|e| Entity::init(e.as_ref()));
     }
 
-    fn update () {
-
+    pub fn update (&self) {
+        let _ = self.entities
+            .iter()
+            .map(|e| Entity::update(e.as_ref()));
     }
 }
