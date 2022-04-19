@@ -1,7 +1,7 @@
 /.idea/
 
-/go/build/
+**/package-lock.json
+**/node_modules/
 
-# Added by cargo
-/target
-/Cargo.lock
+/backend/index.js
+/backend/index.js.map

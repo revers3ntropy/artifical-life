@@ -1,0 +1,26 @@
+{
+  "name": "alife-sim",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revers3ntropy/artifical-life.git"
+  },
+  "author": "revers3ntropy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/revers3ntropy/artifical-life/issues"
+  },
+  "homepage": "https://github.com/revers3ntropy/artifical-life#readme",
+  "dependencies": {
+    "ts-loader": "^9.2.8"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.9.2"
+  }
+}
