@@ -37,13 +37,7 @@ impl Serialize for World {
             S: Serializer,
     {
         let mut s = serializer.serialize_struct("World", 1)?;
-        s.serialize_field("entities",
-                          &self.entities
-                              .iter()
-                              .map(|a| {
-                                  a.serialize()
-                                      .expect("Failed to serialize entity");
-                              }))?;
+        s.serialize_field("entities", &self.entities)?;
         s.end()
     }
 }

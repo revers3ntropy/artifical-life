@@ -192,6 +192,4 @@ func main () {
     window.setTimeout(window.location.reload, 60 * 1000);
 };
 
-if __main__ {
-	main();
-}
+main();

@@ -1,7 +1,7 @@
 use crate::sim::entity::Entity;
 use serde;
 use serde::ser::SerializeStruct;
-use serde::Serializer;
+use serde::{Serialize, Serializer};
 
 
 pub struct Agent {
@@ -18,7 +18,9 @@ impl Entity for Agent {
     fn update (&self, d_t: u64) {
 
     }
+}
 
+impl Serialize for Agent {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where
             S: Serializer,
