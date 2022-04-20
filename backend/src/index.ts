@@ -1,14 +1,45 @@
-const express = require('express');
+import express from 'express';
+import ws from 'ws';
+import {World} from './world';
 
-// Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
-// App
-const app = express();
-app.get('/', (req: any, res: any) => {
-    res.send('Hello World');
-});
+const wsConnections: ws.WebSocket[] = [];
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+const world = new World();
+
+function startWSTicker () {
+    setInterval(() => {
+        for (const con of wsConnections) {
+            con.send(world.json());
+        }
+    }, 1000/60);
+}
+
+function main () {
+    const app = express();
+
+    const wsServer = new ws.Server({
+        noServer: true
+    });
+
+    wsServer.on('connection', (socket) => {
+        if (socket) {
+            wsConnections.push(socket);
+        }
+    });
+
+    const server = app.listen(PORT, HOST);
+    console.log(`Running on http://${HOST}:${PORT}`);
+
+    server.on('upgrade', (request, socket, head) => {
+        wsServer.handleUpgrade(request, socket, head, (socket) => {
+            wsServer.emit('connection', socket, request);
+        });
+    });
+
+    startWSTicker();
+}
+
+main();

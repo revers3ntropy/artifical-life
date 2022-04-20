@@ -18,9 +18,13 @@
   },
   "homepage": "https://github.com/revers3ntropy/artifical-life#readme",
   "dependencies": {
+    "express": "^4.17.3",
     "ts-loader": "^9.2.8"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.25",
+    "@types/ws": "^8.5.3",
     "webpack-cli": "^4.9.2"
   }
 }
