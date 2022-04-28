@@ -1,5 +1,17 @@
+interface IBrainIn {
+
+}
+
+interface IBrainOut {
+
+}
+
 export class Brain {
-    update () {
+    init () {
+
+    }
+
+    update (inputs: IBrainIn, outputs: IBrainOut) {
 
     }
 }

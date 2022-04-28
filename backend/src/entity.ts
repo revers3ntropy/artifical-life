@@ -9,4 +9,5 @@ export abstract class Entity {
 
     abstract json (): string;
     abstract update (dT: number): void;
+    abstract init (): void;
 }

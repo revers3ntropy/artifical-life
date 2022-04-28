@@ -18,4 +18,8 @@ export class Agent extends Entity {
     public update (dT: number) {
         this.brain.update();
     }
+
+    init () {
+        this.brain.init();
+    }
 }
