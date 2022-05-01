@@ -14,12 +14,12 @@ func update (selected) {
 
 	sidebar.innerHTML = `
 		<p>
-			#` + selected['Id'].str() + `<br>
-			X/Y: ` + m.round(selected['Pos']['X']).str() + `, ` + m.round(selected['Pos']['Y']).str() + `<br>
-			` + m.round(selected['Rot'] * 57.2958).str() + `° ` + m.round(selected['Rot']).str() + `r<br>
-			` + m.round(selected['Weight'] / 9.81).str() + `Kg<br>
-			` + m.round(selected['Energy']).str() + `J<br>
-			` + selected['Brain'].str() + `
+			#` + selected['id'].str() + `<br>
+			X/Y: ` + m.round(selected['position']['x']).str() + `, ` + m.round(selected['position']['x']).str() + `<br>
+			` + m.round(selected['rotation'] * 57.2958).str() + `°<br>
+			` + m.round(selected['weight'] / 9.81).str() + `Kg<br>
+			` + m.round(selected['energy']).str() + `J<br>
+			` + selected['brain'].str() + `
 		</p>
 	`;
 };

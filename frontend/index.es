@@ -24,18 +24,18 @@ let var drag_start: V2 = V2(0, 0);
 let var drag_end: V2 = V2(0, 0);
 
 let Agent = interface({
-	Pos: Any
+	position: Any
 });
 
 let var world = {
-	Entities: []
+	entities: []
 };
 
 let var selected: Num = -1;
 
 func agent_by_id (id: Num) {
-	for agent in world['Entities'] {
-		if agent['Id'] == id {
+	for agent in world['entities'] {
+		if agent['id'] == id {
 			return agent;
 		}
 	}
@@ -57,7 +57,7 @@ func set_canvas_size () {
 };
 
 func agent_pos (agent: Obj) {
-	return V2(agent['Pos']['X'], agent['Pos']['Y']);
+	return V2(agent['position']['x'], agent['position']['y']);
 };
 
 func point_touching_agents (agents: (Arr[Obj]), point: V2): (Arr[Obj]) {
@@ -87,9 +87,9 @@ func setup_input_listeners () {
     canvas.addEventListener('mouseup', func (event) {
         dragging = false;
 
-		let touching = point_touching_agents(world['Entities'], get_mouse_pos(event));
+		let touching = point_touching_agents(world['entities'], get_mouse_pos(event));
 		if touching.len() > 0 {
-			selected = touching[0]['Id'];
+			selected = touching[0]['id'];
 		} else if (get_mouse_pos(event).dist(drag_start) < 5) {
 			selected = -1;
 		}
@@ -123,7 +123,7 @@ func get_mouse_pos (event): V2 {
 };
 
 func start_server_connection () {
-	let socket = window.WebSocket('ws://' + window.location.hostname + ':' + api_port.str() + '/start-connection');
+	let socket = window.WebSocket('ws://' + window.location.hostname + ':' + api_port.str());
 
 	socket.addEventListener('open', func (event) {
 		print('Connected to server');
@@ -135,19 +135,19 @@ func start_server_connection () {
 	});
 
 	socket.addEventListener('close', func (event) {
-
+		print('Connection closed');
 	})
 };
 
-func agent_radius (agent) m.sqrt(agent.Weight / m.PI) + 2;
+func agent_radius (agent) m.sqrt(agent['weight'] / m.PI) + 2;
 
 func render_agent (agent, camera_pos: V2) {
 	ctx.beginPath();
 
 	let render_pos: V2 = zoom_scaled_pos(
 		V2(
-			agent['Pos']['X'] - camera_pos.x,
-			agent['Pos']['Y'] - camera_pos.y
+			agent['position']['x'] - camera_pos.x,
+			agent['position']['y'] - camera_pos.y
 		),
 		camera.zoom,
 		V2(
@@ -156,7 +156,7 @@ func render_agent (agent, camera_pos: V2) {
 		)
 	);
 	let r = agent_radius(agent) * camera.zoom;
-	let colour = agent.Genes.Colour;
+	let colour = agent['genes']['colour'];
 
 	ctx.arc(render_pos.x, render_pos.y, r, 0, m.PI * 2);
 
@@ -176,7 +176,7 @@ func render () {
 
 	let camera_pos = camera.pos - V2(width, height)/2;
 
-	for agent in world['Entities'] {
+	for agent in world['entities'] {
 		render_agent(agent, camera_pos);
 	}
 

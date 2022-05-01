@@ -1,22 +1,55 @@
-import {Brain} from './brain';
-import {Entity} from './entity';
-import {v2} from './v2';
+import { Brain } from './brain';
+import { Entity } from './entity';
+import { v2 } from './v2';
+
+interface Phenotype {
+    colour: string;
+    maxMoveSpeed: number;
+    maxTurnSpeed: number;
+    maxWeight: number;
+    maxEnergy: number;
+}
 
 export class Agent extends Entity {
     brain: Brain;
+    weight = 10;
+    energy = 10;
 
-    constructor (position=v2.zero) {
-        super(position);
+    constructor (id: number, position= new v2(0, 0), rotation=0) {
+        super(id, position, rotation);
 
         this.brain = new Brain;
     }
 
-    public json () {
-        return JSON.stringify(this);
+    public override json () {
+        return {
+            ...this,
+            genes: this.phenotype()
+        };
     }
 
     public update (dT: number) {
-        this.brain.update();
+        this.brain.update({}, {
+
+            move: (amount: number) => {
+                const magnitude = Math.max(-1, Math.min(amount, 1)) * this.phenotype().maxMoveSpeed * dT;
+                this.position.add(new v2(magnitude, 0).rotate(this.rotation));
+            },
+
+            turn: (amount: number) => {
+                this.rotation += amount * this.phenotype().maxTurnSpeed * dT;
+            }
+        });
+    }
+
+    public phenotype (): Phenotype{
+        return {
+            colour: 'rgb(0, 0, 0)',
+            maxMoveSpeed: 10,
+            maxTurnSpeed: 10**-1,
+            maxEnergy: 10**0,
+            maxWeight: 10
+        }
     }
 
     init () {

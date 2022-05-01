@@ -1,10 +1,10 @@
 import express from 'express';
 import ws from 'ws';
 
-import {now} from './util';
-import {World} from './world';
+import { now } from './util';
+import { World } from './world';
 
-const PORT = 8080;
+const PORT = 8090;
 const HOST = '0.0.0.0';
 
 const wsConnections: ws.WebSocket[] = [];
@@ -14,7 +14,7 @@ let world: World;
 function startWSTicker () {
     setInterval(() => {
         for (const con of wsConnections) {
-            con.send(world.json());
+            con.send(JSON.stringify(world.json()));
         }
     }, 1000/60);
 }
@@ -22,7 +22,7 @@ function startWSTicker () {
 function startGameLoop () {
     let lastFrame = now();
     setInterval(() => {
-        world.update(now() - lastFrame);
+        world.update((now() - lastFrame) / 1000);
         lastFrame = now();
     }, 1000/60);
 }
