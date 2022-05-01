@@ -1,6 +1,7 @@
 import { Brain } from './brain';
 import { Entity } from './entity';
 import { v2 } from './v2';
+import * as tf from '@tensorflow/tfjs';
 
 interface Phenotype {
     colour: string;
@@ -29,7 +30,9 @@ export class Agent extends Entity {
     }
 
     public update (dT: number) {
-        this.brain.update({}, {
+        this.brain.update({
+            raw: tf.randomNormal([10], 0.5, 1, 'float32', this.id)
+        }, {
 
             move: (amount: number) => {
                 const magnitude = Math.max(-1, Math.min(amount, 1)) * this.phenotype().maxMoveSpeed * dT;
@@ -53,6 +56,6 @@ export class Agent extends Entity {
     }
 
     init () {
-        this.brain.init();
+        this.brain.init(2, [10], 2);
     }
 }

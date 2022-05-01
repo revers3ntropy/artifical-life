@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.16.0",
+    "synaptic": "^1.1.4"
+  },
+  "devDependencies": {
+    "@types/synaptic": "^1.0.4"
+  }
+}
