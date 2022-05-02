@@ -18,6 +18,6 @@ export abstract class Entity {
         return this;
     }
 
-    abstract update (dT: number): Promise<void>;
+    abstract update (dT: number, entities: Entity[]): Promise<void>;
     abstract init (): void;
 }

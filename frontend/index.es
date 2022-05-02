@@ -23,8 +23,9 @@ let var dragging = false;
 let var drag_start: V2 = V2(0, 0);
 let var drag_end: V2 = V2(0, 0);
 
-let Agent = interface({
-	position: Any
+let Entity = interface({
+	position: Any,
+	rotation: Any
 });
 
 let var world = {
@@ -57,11 +58,11 @@ func set_canvas_size () {
 };
 
 func agent_pos (agent: Obj) {
-	return V2(agent['position']['x'], agent['position']['y']);
+	V2(agent['position']['x'], agent['position']['y']);
 };
 
-func point_touching_agents (agents: (Arr[Obj]), point: V2): (Arr[Obj]) {
-	let var touching: (Arr[Any]) = [];
+func point_touching_agents (agents: Arr[Obj], point: V2): Arr[Obj] {
+	let var touching: Arr[Any] = [];
 	for agent in agents {
 		if point.dist(agent_pos(agent)) < agent_radius(agent) * camera.zoom {
 			touching += [agent];
@@ -125,7 +126,7 @@ func get_mouse_pos (event): V2 {
 func start_server_connection () {
 	let socket = window.WebSocket('ws://' + window.location.hostname + ':' + api_port.str());
 
-	socket.addEventListener('open', func (event) {
+	socket.addEventListener('open', func (_) {
 		print('Connected to server');
 	});
 
@@ -134,12 +135,14 @@ func start_server_connection () {
 		render();
 	});
 
-	socket.addEventListener('close', func (event) {
+	socket.addEventListener('close', func (_) {
 		print('Connection closed');
-	})
+	});
 };
 
-func agent_radius (agent) m.sqrt(agent['weight'] / m.PI) + 2;
+func agent_radius (agent) {
+	m.sqrt(agent['mass'] / m.PI) + 2
+};
 
 func render_agent (agent, camera_pos: V2) {
 	ctx.beginPath();
@@ -156,7 +159,7 @@ func render_agent (agent, camera_pos: V2) {
 		)
 	);
 	let r = agent_radius(agent) * camera.zoom;
-	let colour = agent['genes']['colour'];
+	let colour = agent['colour'];
 
 	ctx.arc(render_pos.x, render_pos.y, r, 0, m.PI * 2);
 

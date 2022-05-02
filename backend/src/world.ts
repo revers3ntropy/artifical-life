@@ -24,8 +24,8 @@ export class World {
     }
 
     async update (dT: number) {
-        for (const e of this.entities) {
-            await e.update(dT);
+        for (const entity of this.entities) {
+            await entity.update(dT, this.entities);
         }
     }
 }

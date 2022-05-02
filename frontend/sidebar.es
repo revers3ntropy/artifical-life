@@ -12,12 +12,18 @@ func update (selected) {
     	return;
 	}
 
+	let var alive = 'dead';
+	if selected['alive'] {
+		alive = 'alive';
+	}
+
 	sidebar.innerHTML = `
 		<p>
+			` + alive + `<br>
 			#` + selected['id'].str() + `<br>
 			X/Y: ` + m.round(selected['position']['x']).str() + `, ` + m.round(selected['position']['x']).str() + `<br>
 			` + m.round(selected['rotation'] * 57.2958).str() + `°<br>
-			` + m.round(selected['weight'] / 9.81).str() + `Kg<br>
+			` + m.round(selected['mass']).str() + `KG<br>
 			` + m.round(selected['energy']).str() + `J<br>
 		</p>
 	`;

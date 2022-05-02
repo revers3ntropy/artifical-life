@@ -1,11 +1,14 @@
 {
   "scripts": {
-    "build": "npm i && npx webpack-cli --config webpack.config.js",
+    "build": "npx webpack-cli --config webpack.config.js",
     "build-image": "sudo docker build --tag alife-sim .",
     "start-image": "sudo docker run -d -p 8090:8090 --name alife-server alife-sim",
 
+    "stop": "sudo docker stop alife-server && sudo docker rm alife-server",
     "start": "npm run build && npm run build-image && npm run start-image",
-    "stop": "sudo docker stop alife-server && sudo docker rm alife-server"
+
+    "untimed-restart": "npm run stop > build.log && npm run start > build.log",
+    "restart": "time npm run untimed-restart"
   },
   "repository": {
     "type": "git",

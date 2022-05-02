@@ -5,3 +5,5 @@
 
 /backend/index.js
 /backend/index.js.map
+**/*.log
+*.log
