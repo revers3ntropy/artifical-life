@@ -29,8 +29,8 @@ export class Agent extends Entity {
         };
     }
 
-    public update (dT: number) {
-        this.brain.update({
+    public async update (dT: number) {
+        await this.brain.update({
             raw: tf.randomNormal([10], 0, 1, 'float32', this.id)
         }, {
 
@@ -55,7 +55,7 @@ export class Agent extends Entity {
         }
     }
 
-    init () {
+    public init () {
         this.brain.init(2, [10], 2);
     }
 }

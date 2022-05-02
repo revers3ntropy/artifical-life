@@ -1,9 +1,11 @@
 {
-  "name": "alife-sim",
-  "version": "0.0.0",
   "scripts": {
-    "build": "npx webpack-cli --config webpack.config.js",
-    "start": "npm run build && node --enable-source-maps index.js"
+    "build": "npm i && npx webpack-cli --config webpack.config.js",
+    "build-image": "sudo docker build --tag alife-sim .",
+    "start-image": "sudo docker run -d -p 8090:8090 --name alife-server alife-sim",
+
+    "start": "npm run build && npm run build-image && npm run start-image",
+    "stop": "sudo docker stop alife-server && sudo docker rm alife-server"
   },
   "repository": {
     "type": "git",
@@ -25,13 +27,14 @@
     "bufferutil": "^4.0.6",
     "express": "^4.17.3",
     "nock": "^13.2.4",
-    "npm": "^8.8.0",
     "spdx-exceptions": "^2.3.0",
     "spdx-license-ids": "^3.0.11",
-    "ts-loader": "^9.2.8",
     "utf-8-validate": "^5.0.9",
     "victor": "^1.1.0",
     "webpack-cli": "^4.9.2",
     "ws": "^8.5.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.2.8"
   }
 }

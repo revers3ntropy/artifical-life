@@ -172,7 +172,7 @@ func zoom_scaled_pos (pos: V2, zoom: Num, center: V2): V2 {
 };
 
 func render () {
-	//ctx.clearRect(0, 0, width, height);
+	ctx.clearRect(0, 0, width, height);
 
 	let camera_pos = camera.pos - V2(width, height)/2;
 
