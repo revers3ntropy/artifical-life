@@ -1,6 +1,8 @@
 import { Agent } from './agent';
-import { Entity } from './entity';
 import { v2 } from "./v2";
+import { Food } from "./food";
+import { Entity } from "./entity";
+import * as config from './config';
 
 export class World {
     entities: Entity[] = [];
@@ -12,20 +14,49 @@ export class World {
     }
 
     init () {
-        for (let i = 0; i < 1; i++) {
-            const a = new Agent(
+        for (let i = 0; i < 10; i++) {
+            const agent = new Agent(
                 i,
-                new v2(0, 0).randomize(new v2(-50, 50), new v2(50, -50)),
+                new v2(0, 0).randomize(
+                    new v2(-config.worldSize, config.worldSize),
+                    new v2(config.worldSize, -config.worldSize)
+                ),
                 Math.random() * Math.PI*2
             );
-            a.init();
-            this.entities.push(a);
+            agent.Init();
+            this.entities.push(agent);
         }
     }
 
     async update (dT: number) {
         for (const entity of this.entities) {
-            await entity.update(dT, this.entities);
+            await entity.Update(dT, this.entities);
+        }
+
+        for (let i = 0; i < this.entities.length-1; i++) {
+            for (let j = i; j < this.entities.length-1; j++) {
+                const e1 = this.entities[i];
+                const e2 = this.entities[j];
+
+                if (e1 === e2) continue;
+                if (!e1.Touching(e2)) continue;
+
+                e1.OnCollision(e2);
+                e2.OnCollision(e1);
+            }
+        }
+
+        if (Math.random() < config.foodSpawnRate) {
+            const food = new Food(
+                this.entities.length,
+                new v2(0, 0).randomize(
+                    new v2(-config.worldSize, config.worldSize),
+                    new v2(config.worldSize, -config.worldSize)
+                ),
+                0
+            );
+            food.Init();
+            this.entities.push(food);
         }
     }
 }

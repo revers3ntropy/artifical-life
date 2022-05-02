@@ -22,7 +22,7 @@ function startWSTicker () {
 function startGameLoop () {
     let lastFrame = now();
     setInterval(async () => {
-        await world.update((now() - lastFrame) / 1000);
+        world.update((now() - lastFrame) / 1000);
         lastFrame = now();
     }, 1000/60);
 }

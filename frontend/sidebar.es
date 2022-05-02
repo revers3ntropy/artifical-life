@@ -12,9 +12,11 @@ func update (selected) {
     	return;
 	}
 
-	let var alive = 'dead';
-	if selected['alive'] {
-		alive = 'alive';
+	let var alive = 'alive';
+	if selected.has_property('alive') {
+		if selected['alive'] == false {
+			alive = 'alive';
+		}
 	}
 
 	sidebar.innerHTML = `
