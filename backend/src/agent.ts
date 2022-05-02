@@ -31,7 +31,7 @@ export class Agent extends Entity {
 
     public update (dT: number) {
         this.brain.update({
-            raw: tf.randomNormal([10], 0.5, 1, 'float32', this.id)
+            raw: tf.randomNormal([10], 0, 1, 'float32', this.id)
         }, {
 
             move: (amount: number) => {

@@ -49,6 +49,6 @@ export class Brain {
         const cleanOut: number[][] = arrOut;
 
         outputs.move(cleanOut[0][0]);
-        outputs.turn(cleanOut[0][1] * 2 - 1);
+        outputs.turn(cleanOut[0][1]);
     }
 }

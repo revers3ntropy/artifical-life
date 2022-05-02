@@ -19,7 +19,6 @@ func update (selected) {
 			` + m.round(selected['rotation'] * 57.2958).str() + `°<br>
 			` + m.round(selected['weight'] / 9.81).str() + `Kg<br>
 			` + m.round(selected['energy']).str() + `J<br>
-			` + selected['brain'].str() + `
 		</p>
 	`;
 };

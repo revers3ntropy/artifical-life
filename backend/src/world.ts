@@ -12,7 +12,7 @@ export class World {
     }
 
     init () {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 1; i++) {
             const a = new Agent(
                 i,
                 new v2(0, 0).randomize(new v2(-50, 50), new v2(50, -50)),
