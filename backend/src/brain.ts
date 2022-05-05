@@ -32,7 +32,7 @@ export class Brain {
                 units: outputLen,
             })
         );
-        //this.model.setWeights([]);
+        // this.model.setWeights([]);
     }
 
     async update (inputs: IBrainIn, outputs: IBrainOut) {
