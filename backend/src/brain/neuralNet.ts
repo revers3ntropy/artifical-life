@@ -24,7 +24,7 @@ export class NNBrain implements Brain {
                 units: outputLen,
             })
         );
-        //this.model.setWeights([]);
+        // this.model.setWeights([]);
     }
 
     async Update (inputs: IBrainIn, outputs: IBrainOut) {
