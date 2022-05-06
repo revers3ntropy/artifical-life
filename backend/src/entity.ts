@@ -1,5 +1,5 @@
 import { v2 } from './v2';
-import type {JSON} from "./util";
+import type { JSON } from "./util";
 
 type radian = number;
 
@@ -15,6 +15,7 @@ export interface Phenotype {
     defense: number;
     canEat: boolean;
     canEatDead: boolean;
+    edible: boolean;
 }
 
 export abstract class Entity {

@@ -40,7 +40,8 @@ export class Food extends Entity {
             attack: 0,
             defense: this.defense,
             canEat: false,
-            canEatDead: false
+            canEatDead: false,
+            edible: true,
         };
     }
 }

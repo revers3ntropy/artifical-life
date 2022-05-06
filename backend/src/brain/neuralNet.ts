@@ -1,29 +1,21 @@
-import * as tf from '@tensorflow/tfjs';
+import * as tf from "@tensorflow/tfjs";
+import type { Brain, IBrainIn, IBrainOut } from "./brain";
 
-interface IBrainIn {
-    raw: tf.Tensor
-}
-
-interface IBrainOut {
-    turn: (amount: number) => void;
-    move: (amount: number) => void;
-}
-
-export class Brain {
+export class NNBrain implements Brain {
     model = tf.sequential();
 
-    init (hiddenLayers: number, inpShape: tf.Shape, outputLen: number) {
+    Init (hiddenLayerSize: number, inpLen: number, outputLen: number) {
 
         this.model.add(
             tf.layers.dense({
-                inputShape: inpShape,
-                units: hiddenLayers,
+                inputShape: [inpLen],
+                units: hiddenLayerSize,
                 activation: "tanh",
             })
         );
         this.model.add(
             tf.layers.dense({
-                units: hiddenLayers,
+                units: hiddenLayerSize,
                 activation: "tanh",
             })
         );
@@ -35,7 +27,7 @@ export class Brain {
         //this.model.setWeights([]);
     }
 
-    async update (inputs: IBrainIn, outputs: IBrainOut) {
+    async Update (inputs: IBrainIn, outputs: IBrainOut) {
 
         const rawOut = this.model.predict(inputs.raw.reshape([1, 10]));
         if (Array.isArray(rawOut)) throw 'Neural output expected to be Tensor, not array';

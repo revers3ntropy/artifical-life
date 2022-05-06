@@ -1,4 +1,4 @@
-import { Brain } from './brain';
+import { NNBrain as Brain } from './brain/neuralNet';
 import { v2 } from './v2';
 import * as tf from '@tensorflow/tfjs';
 import { Entity } from "./entity";
@@ -36,8 +36,9 @@ export class Agent extends Entity {
         this.energy -= this.phenotype.restingEnergyUsage * this.mass * dT;
         this.checkEnergyLevels();
 
-        await this.brain.update({
-            raw: tf.randomNormal([10], 0)
+        await this.brain.Update({
+            raw: tf.randomNormal([10], 0),
+            entities
         }, {
             move: (amount: number) => {
                 this.move(amount, dT);
@@ -64,7 +65,8 @@ export class Agent extends Entity {
                 attack: 1,
                 defense: 1,
                 canEat: true,
-                canEatDead: false
+                canEatDead: false,
+                edible: true
             };
         } else {
             return {
@@ -78,7 +80,8 @@ export class Agent extends Entity {
                 attack: 0,
                 defense: 0,
                 canEat: false,
-                canEatDead: false
+                canEatDead: false,
+                edible: true
             };
         }
     }
@@ -90,7 +93,7 @@ export class Agent extends Entity {
     }
 
     public Init () {
-        this.brain.init(2, [10], 2);
+        this.brain.Init(2, 10, 2);
     }
 
     public checkEnergyLevels () {
