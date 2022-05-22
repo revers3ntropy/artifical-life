@@ -1,7 +1,8 @@
-import { NNBrain as Brain } from './brain/neuralNet';
-import { v2 } from './v2';
 import * as tf from '@tensorflow/tfjs';
-import { Entity } from "./entity";
+import Victor from 'victor';
+import {NNBrain as Brain} from './brain/neuralNet';
+import {Entity} from './entity';
+import {v2} from './v2';
 
 interface Desires {
     hunger: number;
@@ -12,7 +13,7 @@ export class Agent extends Entity {
 
     alive = true;
 
-    constructor (id: number, position= new v2(0, 0), rotation= 0) {
+    constructor (id: number, position: Victor, rotation= 0) {
         super(id, position, rotation);
 
         this.brain = new Brain;

@@ -1,14 +1,16 @@
-import * as tf from "@tensorflow/tfjs";
-import type { Entity } from "../entity";
+import * as tf from '@tensorflow/tfjs';
+import type {Entity} from '../entity';
 
 export interface IBrainIn {
     raw: tf.Tensor,
-    entities: Entity[]
+    entities: Entity[],
+    self: Entity
 }
 
 export interface IBrainOut {
     turn: (amount: number) => void;
     move: (amount: number) => void;
+    releasePheromone: () => void;
 }
 
 export interface Brain {
