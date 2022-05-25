@@ -6,6 +6,7 @@ import * as config from './config';
 
 export class World {
     entities: Entity[] = [];
+    lastId = 0;
 
     json () {
         return {
@@ -25,12 +26,15 @@ export class World {
             );
             agent.Init();
             this.entities.push(agent);
+            this.lastId++;
         }
     }
 
     async update (dT: number) {
         for (const entity of this.entities) {
-            await entity.Update(dT, this.entities);
+            await entity.Update(dT, this.entities, (cb) => {
+                this.entities.push(cb(this.lastId));
+            });
         }
 
         for (let i = 0; i < this.entities.length-1; i++) {
@@ -48,7 +52,7 @@ export class World {
 
         if (Math.random() < config.foodSpawnRate) {
             const food = new Food(
-                this.entities.length,
+                this.lastId,
                 new v2(0, 0).randomize(
                     new v2(-config.worldSize, config.worldSize),
                     new v2(config.worldSize, -config.worldSize)
@@ -57,6 +61,7 @@ export class World {
             );
             food.Init();
             this.entities.push(food);
+            this.lastId++;
         }
     }
 }

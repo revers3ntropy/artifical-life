@@ -2,9 +2,10 @@ import * as tf from '@tensorflow/tfjs';
 import type {Entity} from '../entity';
 
 export interface IBrainIn {
-    raw: tf.Tensor,
-    entities: Entity[],
-    self: Entity
+    raw: tf.Tensor;
+    entities: Entity[];
+    self: Entity;
+    dT: number;
 }
 
 export interface IBrainOut {

@@ -40,7 +40,7 @@ export abstract class Entity {
     }
 
     // shared behaviours
-    abstract Update (dT: number, entities: Entity[]): Promise<void>;
+    abstract Update (dT: number, entities: Entity[], addEntity: (cb: (id: number) => Entity) => void): Promise<void>;
     abstract Init (): void;
     abstract OnCollision (e: Entity): void;
     abstract Touching (e: Entity): boolean;

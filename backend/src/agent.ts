@@ -3,6 +3,8 @@ import Victor from 'victor';
 import {NNBrain as Brain} from './brain/neuralNet';
 import {Entity} from './entity';
 import {v2} from './v2';
+import { Pheromone } from "./pheromone";
+import { IBrainIn, IBrainOut } from "./brain/brain";
 
 interface Desires {
     hunger: number;
@@ -29,7 +31,11 @@ export class Agent extends Entity {
         };
     }
 
-    public override async Update (dT: number, entities: Entity[]) {
+    public override async Update (
+        dT: number,
+        entities: Entity[],
+        addEntity: (cb: (id: number) => Entity) => void
+    ) {
         this.age += dT;
 
         if (!this.alive) return;
@@ -37,18 +43,33 @@ export class Agent extends Entity {
         this.energy -= this.phenotype.restingEnergyUsage * this.mass * dT;
         this.checkEnergyLevels();
 
-        await this.brain.Update({
+        const self = this;
+
+        const inputs: IBrainIn = {
             raw: tf.randomNormal([10], 0),
-            entities
-        }, {
+            entities,
+            self,
+            dT
+        };
+
+        const outputs: IBrainOut = {
+
             move: (amount: number) => {
                 this.move(amount, dT);
             },
 
             turn: (amount: number) => {
                 this.turn(amount, dT);
+            },
+
+            releasePheromone: () => {
+                addEntity((id: number) => {
+                    return new Pheromone(id, 1, self.position)
+                });
             }
-        });
+        };
+
+        await this.brain.Update(inputs, outputs);
 
         this.checkEnergyLevels();
     }
@@ -127,7 +148,7 @@ export class Agent extends Entity {
     }
 
     public override Touching (e: Entity): boolean {
-        return false;
+        return e.position.distance(this.position) <= this.mass + e.mass;
     }
 
     public override OnCollision (e: Entity) {

@@ -137,11 +137,12 @@ func start_server_connection () {
 
 	socket.addEventListener('close', func (_) {
 		print('Connection closed');
+		window.location.reload();
 	});
 };
 
 func agent_radius (agent) {
-	m.sqrt(agent['mass'] / m.PI) + 2
+	agent['mass'];
 };
 
 func render_agent (agent, camera_pos: V2) {
