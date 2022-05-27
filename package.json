@@ -1,0 +1,19 @@
+{
+  "name": "artifical-life",
+  "version": "1.0.0",
+  "description": "Educational Artificial Life Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "scripts/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revers3ntropy/artifical-life.git"
+  },
+  "author": "Joseph Coppin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/revers3ntropy/artifical-life/issues"
+  },
+  "homepage": "https://github.com/revers3ntropy/artifical-life#readme"
+}
