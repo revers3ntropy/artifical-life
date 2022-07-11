@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/revers3ntropy/artifical-life/issues"
   },
-  "homepage": "https://github.com/revers3ntropy/artifical-life#readme"
+  "homepage": "https://github.com/revers3ntropy/artifical-life#readme",
+  "dependencies": {
+    "@types/node": "^17.0.36",
+    "@types/ws": "^8.5.3",
+    "ws": "^8.7.0"
+  }
 }

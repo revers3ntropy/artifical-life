@@ -1,8 +1,8 @@
 export default class kg {
     private readonly __v: number;
 
-    constructor (value?: number) {
-        this.__v = value || 0;
+    constructor (kg?: number) {
+        this.__v = kg || 0;
     }
 
     get grams () {
